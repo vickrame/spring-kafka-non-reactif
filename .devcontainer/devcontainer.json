@@ -1,0 +1,27 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/debian
+{
+	"name": "Debian",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"dockerComposeFile": ["../docker-compose.yml", "docker-compose.extend.yml"],
+	"service": "java",
+  	"workspaceFolder": "/workspace",
+	"shutdownAction": "stopCompose",
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/gradle-sdkman:2": {
+			"version": "latest",
+			"jdkVersion": "17",
+			"jdkDistro": "tem"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscjava.vscode-java-pack"
+			]
+		}
+	},
+	"forwardPorts": [
+		9000
+	]
+}
