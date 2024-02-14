@@ -1,0 +1,177 @@
+version: '3.8'
+services:
+  controller-7.6:
+    image: confluentinc/cp-server:7.6.0
+    restart: unless-stopped
+    hostname: controller
+    container_name: controller
+    ports:
+      - "9093:9093"
+      - "9103:9103"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9203
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_PROCESS_ROLES: 'controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@localhost:9093'
+      KAFKA_LISTENERS: 'CONTROLLER://:9093'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LOG_DIRS: '/tmp/kraft-controller-logs'
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_REPLICATION_FACTOR: 1
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: false
+      CLUSTER_ID: 'qCU6h-FuTbCbrt97HxAuhA'
+      JMX_PORT: 1099
+  broker1-7.6:
+    image: confluentinc/cp-server:7.6.0
+    restart: unless-stopped
+    hostname: broker1
+    container_name: broker1
+    depends_on:
+      - controller-7.6
+    ports:
+      - "9092:9092"
+      - "9102:9102"
+    environment:
+      KAFKA_NODE_ID: 2
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker1:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      #KAFKA_OPTS: "$KAFKA_OPTS -javaagent:/tmp/jmx_prometheus_javaagent-0.12.0.jar=7071:/etc/jmxexporter/jmxexporter.yml"
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_PROCESS_ROLES: 'broker'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@controller:9093'
+      KAFKA_LISTENERS: 'PLAINTEXT://broker1:29092,PLAINTEXT_HOST://0.0.0.0:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_REPLICATION_FACTOR: 1
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: false
+      KAFKA_AUTO_CREATE_TOPIC_ENABLE: false
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      CLUSTER_ID: 'qCU6h-FuTbCbrt97HxAuhA'
+      JMX_PORT: 1099
+#    volumes:
+#      - "./tools/ops/jmxexporter.yml:/etc/jmxexporter/jmxexporter.yml"
+#      - "./tools/ops/jmx_prometheus_javaagent-0.12.0.jar:/tmp/jmx_prometheus_javaagent-0.12.0.jar"
+  broker2-7.6:
+    image: confluentinc/cp-server:7.6.0
+    restart: unless-stopped
+    hostname: broker2
+    container_name: broker2
+    depends_on:
+      - controller-7.6
+    ports:
+      - "9094:9094"
+      - "9104:9104"
+    environment:
+      KAFKA_NODE_ID: 3
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker2:29094,PLAINTEXT_HOST://localhost:9094'
+      KAFKA_OPTS: "$KAFKA_OPTS -javaagent:/tmp/jmx_prometheus_javaagent-0.12.0.jar=7071:/etc/jmxexporter/jmxexporter.yml"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_PROCESS_ROLES: 'broker'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@controller:9093'
+      KAFKA_LISTENERS: 'PLAINTEXT://broker2:29094,PLAINTEXT_HOST://0.0.0.0:9094'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_REPLICATION_FACTOR: 1
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: false
+      KAFKA_AUTO_CREATE_TOPIC_ENABLE: false
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      CLUSTER_ID: 'qCU6h-FuTbCbrt97HxAuhA'
+      JMX_PORT: 1099
+#    volumes:
+#      - "./tools/ops/jmxexporter.yml:/etc/jmxexporter/jmxexporter.yml"
+#      - "./tools/ops/jmx_prometheus_javaagent-0.12.0.jar:/tmp/jmx_prometheus_javaagent-0.12.0.jar"
+  broker3-7.6:
+    image: confluentinc/cp-server:7.6.0
+    restart: unless-stopped
+    hostname: broker3
+    container_name: broker3
+    depends_on:
+      - controller-7.6
+    ports:
+      - "9095:9095"
+      - "9105:9105"
+    environment:
+      KAFKA_NODE_ID: 4
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker3:29095,PLAINTEXT_HOST://localhost:9095'
+      #KAFKA_OPTS: "$KAFKA_OPTS -javaagent:/tmp/jmx_prometheus_javaagent-0.12.0.jar=7071:/etc/jmxexporter/jmxexporter.yml"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_PROCESS_ROLES: 'broker'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@controller:9093'
+      KAFKA_LISTENERS: 'PLAINTEXT://broker3:29095,PLAINTEXT_HOST://0.0.0.0:9095'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_REPLICATION_FACTOR: 1
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPIC_ENABLE: false
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: false
+      CLUSTER_ID: 'qCU6h-FuTbCbrt97HxAuhA'
+      JMX_PORT: 1099
+#    volumes:
+#      - "./tools/ops/jmxexporter.yml:/etc/jmxexporter/jmxexporter.yml"
+#      - "./tools/ops/jmx_prometheus_javaagent-0.12.0.jar:/tmp/jmx_prometheus_javaagent-0.12.0.jar"
+  create-topics:
+    image: confluentinc/cp-server:7.6.0
+    hostname: create-topics
+    container_name: create-topics
+    command: >
+      bash -c 'echo Waiting for Kafka to be ready... ;
+      cub kafka-ready -b broker1:29092 1 300 ;
+      echo Creating topics... ;
+      kafka-topics --bootstrap-server broker1:29092 --create --topic test-facture --partitions 3 --replication-factor 1 ;
+      kafka-topics --bootstrap-server broker1:29092 --create --topic test-dlt --partitions 3 --replication-factor 1 ;
+      kafka-topics --bootstrap-server broker1:29092 --create --topic test-audit --partitions 3 --replication-factor 1 ;
+      true'
+  akhq:
+    image: tchiotludo/akhq
+    restart: unless-stopped
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          pagination:
+            page-size: 50
+          connections:
+            docker-kafka-server:
+              properties:
+                 bootstrap.servers: "broker1:29092,broker2:29094,broker3:29095"
+#              schema-registry:
+#                  url: "http://schema-registry:8081"               
+#              connect:
+#                - name: Connect
+#                  url: "http://connect:8083"
+    ports:
+      - "9000:8080"

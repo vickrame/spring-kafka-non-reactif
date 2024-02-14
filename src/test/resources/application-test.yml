@@ -1,0 +1,17 @@
+spring:
+  kafka:
+    properties:
+      bootstrap:
+        servers: ${spring.embedded.kafka.brokers}
+      security:
+        protocol: PLAINTEXT
+    consumer:
+      group-id: test-facture
+      enable-auto-commit: false
+      fetch-max-wait: PT0.01S
+      auto-offset-reset: earliest
+      properties:
+        "[spring.json.trusted.packages]": "zenika.entretien.spring.reactif.springkafka.model"
+    listener:
+      ack-mode: BATCH
+      type: BATCH

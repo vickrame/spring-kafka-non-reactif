@@ -1,0 +1,10 @@
+spring:
+  kafka:
+  bootstrap-servers: ${BOOTSTRAP_SERVERS_CONFIG:broker1:29092,broker2:29094,broker3:29095}
+  properties:
+    security:
+      protocol: PLAINTEXT
+    producer:
+      client-id: zen_producer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
