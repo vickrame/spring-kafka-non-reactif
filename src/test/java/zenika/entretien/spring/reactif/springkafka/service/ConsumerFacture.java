@@ -1,7 +1,5 @@
 package zenika.entretien.spring.reactif.springkafka.service;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -25,6 +23,22 @@ public class ConsumerFacture {
     public static final String PROP_JSON_DEFAULT_CLASS_DESERIALIZER = JsonDeserializer.VALUE_DEFAULT_TYPE
             + "=zenika.entretien.spring.reactif.springkafka.model.Facture";
 
+    public CountDownLatch getLatch() {
+        return latch;
+    }
+
+    public void setLatch(CountDownLatch latch) {
+        this.latch = latch;
+    }
+
+    public Facture getPayload() {
+        return payload;
+    }
+
+    public void setPayload(Facture payload) {
+        this.payload = payload;
+    }
+
     public CountDownLatch latch;
 
 
@@ -39,7 +53,7 @@ public class ConsumerFacture {
     public void receive(List<ConsumerRecord<?, ?>> consumerRecords) {
         //log.info("Facture recuperée");
         assert (consumerRecords.size() == 1);
-        if (consumerRecords.get(0).value() instanceof Facture){
+        if (consumerRecords.get(0).value() instanceof Facture) {
             payload = (Facture) consumerRecords.get(0).value();
         }
 

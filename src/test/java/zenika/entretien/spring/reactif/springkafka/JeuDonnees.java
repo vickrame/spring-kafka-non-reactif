@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class JeuDonnees {
 
-    public static Facture buidFacture(){
+    public static Facture buidFacture() {
         return Facture.builder().id(UUID.randomUUID().toString()).sens("D").montant(23.30).date(Calendar.getInstance().getTime()).build();
     }
 }

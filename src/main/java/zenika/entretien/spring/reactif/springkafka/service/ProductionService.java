@@ -20,14 +20,14 @@ public class ProductionService implements
     private KafkaTemplate<String, Facture> producer;
 
 
-    public void sendMessage(Facture facture){
+    public void sendMessage(Facture facture) {
         String id = UUID.randomUUID().toString();
-        producer.send(new ProducerRecord<>("test-facture",id,facture));
+        producer.send(new ProducerRecord<>("test-facture", id, facture));
     }
 
-    public void sendMessage(){
+    public void sendMessage() {
         String id = UUID.randomUUID().toString();
-        producer.send(new ProducerRecord<>("test-facture",id,Facture.builder().id(id).sens("C").date(Calendar.getInstance().getTime()).build()));
+        producer.send(new ProducerRecord<>("test-facture", id, Facture.builder().id(id).sens("C").date(Calendar.getInstance().getTime()).build()));
     }
 
     @Override

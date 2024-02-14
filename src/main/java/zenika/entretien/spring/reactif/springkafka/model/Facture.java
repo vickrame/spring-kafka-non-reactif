@@ -14,7 +14,7 @@ import java.util.Date;
 public class Facture {
 
     private String id;
-    private String sens ; // D ou C
+    private String sens; // 'D' ou 'C'
     private Double montant;
     private Date date;
 }

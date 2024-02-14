@@ -32,7 +32,7 @@ public class ConsumerConfig {
 
     @Bean
     public ConsumerFactory<String, Facture> consumerFactory() {
-        JsonDeserializer <Facture> jsonDeserializer = new JsonDeserializer<>(Facture.class);
+        JsonDeserializer<Facture> jsonDeserializer = new JsonDeserializer<>(Facture.class);
         return new DefaultKafkaConsumerFactory<String, Facture>(consumerProperties(), new StringDeserializer(), jsonDeserializer);
     }
 
