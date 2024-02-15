@@ -17,17 +17,19 @@ L'application actuelle est bloquante car non reactive, de plus on n'a pas la pos
 
 L'objectif sera donc de transformer cette application en la rendant reactive, en utilisant :
  
-** une route http permettant de prendre uen facture en entrée
-** le controller devra interagir avec le service de publication de message Kafka.
-** Faire les tests des unitaires
+* une route http permettant de prendre uen facture en entrée
+* le controller devra interagir avec le service de publication de message Kafka.
+* Faire les tests des unitaires
 
 ### Note
 Le service de publication de message est un service non reactive.
-Pour transformer le service, il suffit de transformer *KafkaTemplate* par *ReactiveKafkaProducerTemplate*
+Pour transformer le service, il suffit de transformer **KafkaTemplate** par **ReactiveKafkaProducerTemplate**
 
-1. Modifier la classe de configuration pour utiliser la classe de spring *ReactiveKafkaProducerTemplate*
- * Cette classe permet de construire [un sender Kafka reactive] (https://docs.spring.io/spring-kafka/api/org/springframework/kafka/core/reactive/ReactiveKafkaProducerTemplate.html) 
- * Afin de faciliter cette construction, on utilisera le [SenderOptions] (https://projectreactor.io/docs/kafka/release/api/reactor/kafka/sender/SenderOptions.html) qui est un helper de construction
-2. Construire un record Kafka en utilisant la méthode *create* de la classe [SenderRecords](https://projectreactor.io/docs/kafka/release/api/reactor/kafka/sender/SenderRecord.html)
-3. Utiliser la méthode send() *ReactiveKafkaProducerTemplate*
+1. Modifier la classe de configuration pour utiliser la classe de spring **ReactiveKafkaProducerTemplate**
+
+  * Cette classe permet de construire [un sender Kafka reactive](https://docs.spring.io/spring-kafka/api/org/springframework/kafka/core/reactive/ReactiveKafkaProducerTemplate.html) 
+  * Afin de faciliter cette construction, on utilisera le [SenderOptions](https://projectreactor.io/docs/kafka/release/api/reactor/kafka/sender/SenderOptions.html) qui est un helper de construction
+
+2. Construire un record Kafka en utilisant la méthode **create** de la classe[SenderRecords](https://projectreactor.io/docs/kafka/release/api/reactor/kafka/sender/SenderRecord.html)
+3. Utiliser la méthode send() **ReactiveKafkaProducerTemplate**
 
