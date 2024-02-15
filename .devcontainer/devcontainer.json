@@ -16,8 +16,12 @@
 	},
 	"customizations": {
 		"vscode": {
+			"settings": {
+				"java.server.launchMode": "Standard"
+			},
 			"extensions": [
-				"vscjava.vscode-java-pack"
+				"vscjava.vscode-java-pack",
+				"vscjava.vscode-gradle"
 			]
 		}
 	},
