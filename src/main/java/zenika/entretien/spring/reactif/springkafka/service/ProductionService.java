@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Service
 public class ProductionService implements
-        ApplicationListener<ContextRefreshedEvent> {
+        ApplicationListener<ContextRefreshedEvent>  {
 
 
     @Autowired
@@ -32,6 +32,6 @@ public class ProductionService implements
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-
+        sendMessage();
     }
 }
